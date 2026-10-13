@@ -1,0 +1,15 @@
+# ملفات السجلات (Logs)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ملفات نظام التشغيل (تظهر أحياناً بشكل مخفي)
+.DS_Store
+Thumbs.db
+
+# ملفات محرر الأكواد
+.vscode/
+.idea/
+
+node_modules/
+.env
