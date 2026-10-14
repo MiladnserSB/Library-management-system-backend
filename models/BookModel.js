@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import mongoose from "mongoose";
+
 
 const bookSchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const bookSchema = new mongoose.Schema(
       default: "available",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Book = mongoose.model("Book", bookSchema);
