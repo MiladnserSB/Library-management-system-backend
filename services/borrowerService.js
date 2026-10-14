@@ -19,4 +19,22 @@ const getBorrowerById = async (borrowerId) => {
   }
 };
 
+const createBorrower = async (borrowerData) => {
+  try {
+    const newBorrower = await Borrower.create(borrowerData);
+    return newBorrower;
+  } catch (error) {
+    console.error(`Error creating borrower with data ${borrowerData}:`, error);
+  }
+};
 
+const updateBorrower = async (id, borrowerData) => {
+  try {
+    const updatedBorrower = await Borrower.findByIdAndUpdate(id, borrowerData);
+
+    return updatedBorrower;
+  } catch (error) {
+    console.error(`Error updating borrower with id ${id}:`, error);
+    throw error;
+  }
+};
