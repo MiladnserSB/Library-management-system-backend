@@ -31,9 +31,10 @@ export const createBorrower = async (borrowerData) => {
       return null;
     }
 
+        const newBorrower = await Borrower.create(borrowerData);
+
     await bookService.changeBookStatus(borrowerData.bookId, "borrowed");
 
-    const newBorrower = await Borrower.create(borrowerData);
     return newBorrower;
   } catch (error) {
     console.error(`Error creating borrower with data ${borrowerData}:`, error);

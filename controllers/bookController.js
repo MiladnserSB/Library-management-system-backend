@@ -3,7 +3,8 @@ import {
   getAvailableBooks, 
   createBook, 
   updateBook, 
-  deleteBook 
+  deleteBook ,
+  getBookById,
 } from "../services/bookService.js";
 
 
@@ -16,6 +17,16 @@ export const getBooksController = async (req, res) => {
   }
 };
 
+
+export const getBookByIdController = async (req, res) => {
+  try {
+    const book = await getBookById(req.params.id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+    res.json(book);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};
 
 export const getAvailableBooksController = async (req, res) => {
   try {
