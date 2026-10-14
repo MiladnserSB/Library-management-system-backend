@@ -11,7 +11,7 @@ import {
 const bookRouter = express.Router();
 
 bookRouter.get("/", getBooksController);
-bookRouter.get("/available", getAvailableBooksController);
+bookRouter.get("/Available", getAvailableBooksController);
 bookRouter.get("/:id", getBookByIdController);
 bookRouter.post("/", createBookController);
 bookRouter.put("/:id", updateBookController);

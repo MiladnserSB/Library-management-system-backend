@@ -11,7 +11,7 @@ export const getAllBooks = async () => {
 
 export const getAvailableBooks = async () => {
   try {
-    return await Book.find({ bookStatus: "available" });
+    return await Book.find({ status: "Available" });
   } catch (error) {
     console.error("Error getting available books:", error);
     throw error;
@@ -45,7 +45,7 @@ export const deleteBook = async (id) => {
   try {
     const book = await Book.findById(id);
     if (!book) throw new Error("Book not found");
-    if (book.bookStatus === "borrowed")
+    if (book.status === "Borrowed")
       throw new Error("Cant delete borrowed book");
     return await Book.findByIdAndDelete(id);
   } catch (error) {
@@ -67,7 +67,7 @@ export const changeBookStatus = async (id, status) => {
   try {
     const book = await Book.findById(id);
     if (!book) throw new Error("Book not found");
-    book.bookStatus = status;
+    book.status = status;
     return await book.save();
   } catch (error) {
     console.error(`Error changing status for book with id ${id}:`, error);

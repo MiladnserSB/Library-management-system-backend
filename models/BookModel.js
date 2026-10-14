@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 
 const bookSchema = new mongoose.Schema(
   {
-    bookTitle: { type: String, required: true, trim: true },
-    bookAuthor: { type: String, required: true, trim: true },
-    bookStatus: {
+    title: { type: String, required: true, trim: true },
+    author: { type: String, required: true, trim: true },
+    status: {
       type: String,
-      enum: ["available", "borrowed"],
-      default: "available",
+      enum: ["Available", "Borrowed"],
+      default: "Available",
     },
   },
   { timestamps: true }

@@ -1,4 +1,4 @@
-import {
+/* import {
   getAllBorrowers,
   createBorrower,
   getBorrowerById,
@@ -77,5 +77,72 @@ export const deleteBorrowerController = async (req, res) => {
       .json({ message: "Borrower deleted successfully", deletedBorrower });
   } catch (e) {
     res.status(500).json({ message: e.message });
+  }
+};
+ */
+
+import {
+  getAllBorrowers,
+  createBorrower,
+  getBorrowerById,
+  updateBorrower,
+  deleteBorrower,
+} from "../services/borrowerService.js";
+
+export const getAllBorrowersController = async (req, res) => {
+  try {
+    const borrowers = await getAllBorrowers();
+    res.status(200).json(borrowers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBorrowerByIdController = async (req, res) => {
+  try {
+    const borrower = await getBorrowerById(req.params.id);
+
+    if (!borrower) {
+      return res.status(404).json({ message: "Borrower not found" });
+    }
+
+    res.status(200).json(borrower);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createBorrowerController = async (req, res) => {
+  try {
+    const newBorrower = await createBorrower(req.body);
+    res.status(201).json(newBorrower);
+  } catch (error) {
+    const status = error.message === "Book not found" ? 404 : 400;
+    res.status(status).json({ message: error.message });
+  }
+};
+
+export const updateBorrowerController = async (req, res) => {
+  try {
+    const updatedBorrower = await updateBorrower(req.params.id, req.body);
+
+    res.status(200).json(updatedBorrower);
+  } catch (error) {
+    const status = error.message === "Borrower not found" ? 404 : 400;
+    res.status(status).json({ message: error.message });
+  }
+};
+
+export const deleteBorrowerController = async (req, res) => {
+  try {
+    const deletedBorrower = await deleteBorrower(req.params.id);
+
+    res.status(200).json({
+      message: "Borrower deleted successfully",
+      deletedBorrower,
+    });
+  } catch (error) {
+    const status = error.message === "Borrower not found" ? 404 : 400;
+    res.status(status).json({ message: error.message });
   }
 };
