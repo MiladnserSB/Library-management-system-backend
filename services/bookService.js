@@ -29,7 +29,12 @@ export const createBook = async (data) => {
 
 export const updateBook = async (id, data) => {
   try {
-    return await Book.findByIdAndUpdate(id, data, { new: true });
+    const updatedBook = await Book.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedBook) throw new Error("Book not found");
+    return updatedBook;
   } catch (error) {
     console.error(`Error updating book with id ${id}:`, error);
     throw error;

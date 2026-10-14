@@ -3,7 +3,10 @@ import * as bookService from "./bookService.js";
 
 export const getAllBorrowers = async () => {
   try {
-    return await Borrower.find().populate("bookId", "title author -_id");
+    return await Borrower.find().populate(
+      "bookId",
+      "bookTitle bookAuthor -_id",
+    );
   } catch (error) {
     console.error("Error retrieving borrowers:", error);
     return null;
@@ -14,7 +17,7 @@ export const getBorrowerById = async (borrowerId) => {
   try {
     return await Borrower.findById(borrowerId).populate(
       "bookId",
-      "title author -_id",
+      "bookTitle bookAuthor -_id",
     );
   } catch (error) {
     console.error(`Error retrieving borrower with ID ${borrowerId}:`, error);
@@ -31,7 +34,7 @@ export const createBorrower = async (borrowerData) => {
       return null;
     }
 
-        const newBorrower = await Borrower.create(borrowerData);
+    const newBorrower = await Borrower.create(borrowerData);
 
     await bookService.changeBookStatus(borrowerData.bookId, "borrowed");
 

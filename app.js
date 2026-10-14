@@ -14,5 +14,3 @@ app.use(
 app.use("/borrowers", borrowerRouter);
 app.use("/books", bookRouter);
 export default app;
-
-
