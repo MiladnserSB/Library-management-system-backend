@@ -1,4 +1,5 @@
 import Borrower from "../models/BorrowerModel.js";
+import * as bookService from "./bookService.js";
 
 export const getAllBorrowers = async () => {
   try {
@@ -23,20 +24,42 @@ export const getBorrowerById = async (borrowerId) => {
 
 export const createBorrower = async (borrowerData) => {
   try {
+    const book = await bookService.getBookById(borrowerData.bookId);
+
+    if (!book || book.bookStatus === "borrowed") {
+      console.error("Book is not available or does not exist");
+      return null;
+    }
+
+    await bookService.changeBookStatus(borrowerData.bookId, "borrowed");
+
     const newBorrower = await Borrower.create(borrowerData);
     return newBorrower;
   } catch (error) {
     console.error(`Error creating borrower with data ${borrowerData}:`, error);
+    return null;
   }
 };
 
 export const updateBorrower = async (id, borrowerData) => {
   try {
-    const updatedBorrower = await Borrower.findByIdAndUpdate(id, borrowerData, {
-      new: true,
-    });
+    const borrower = await Borrower.findById(id);
+    if (!borrower) return null;
 
-    return updatedBorrower;
+    if (borrower.returnDate) {
+      console.error("Book is already returned");
+      return null;
+    }
+
+    borrower.returnDate = Date.now();
+    if (borrowerData.borrowerName) {
+      borrower.borrowerName = borrowerData.borrowerName;
+    }
+
+    await bookService.changeBookStatus(borrower.bookId, "available");
+
+    await borrower.save();
+    return borrower;
   } catch (error) {
     console.error(`Error updating borrower with id ${id}:`, error);
     return null;
@@ -45,6 +68,14 @@ export const updateBorrower = async (id, borrowerData) => {
 
 export const deleteBorrower = async (id) => {
   try {
+    const borrower = await Borrower.findById(id);
+    if (!borrower) return null;
+
+    if (!borrower.returnDate) {
+      console.error("Cannot delete borrower: Book not returned yet");
+      return null;
+    }
+
     const deletedBorrower = await Borrower.findByIdAndDelete(id);
     return deletedBorrower;
   } catch (error) {

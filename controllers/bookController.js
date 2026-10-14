@@ -25,6 +25,7 @@ export const getAvailableBooksController = async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 };
+
 export const createBookController = async (req, res) => {
   try {
     const book = await createBook(req.body);
