@@ -1,6 +1,6 @@
 import Borrower from "../models/BorrowerModel";
 
-const getAllBorrowers = async () => {
+export const getAllBorrowers = async () => {
   try {
     return await Borrower.find().populate("bookId", "title author -_id");
   } catch (error) {
@@ -8,7 +8,7 @@ const getAllBorrowers = async () => {
   }
 };
 
-const getBorrowerById = async (borrowerId) => {
+export const getBorrowerById = async (borrowerId) => {
   try {
     return await Borrower.findById(borrowerId).populate(
       "bookId",
@@ -19,7 +19,7 @@ const getBorrowerById = async (borrowerId) => {
   }
 };
 
-const createBorrower = async (borrowerData) => {
+export const createBorrower = async (borrowerData) => {
   try {
     const newBorrower = await Borrower.create(borrowerData);
     return newBorrower;
@@ -28,7 +28,7 @@ const createBorrower = async (borrowerData) => {
   }
 };
 
-const updateBorrower = async (id, borrowerData) => {
+export const updateBorrower = async (id, borrowerData) => {
   try {
     const updatedBorrower = await Borrower.findByIdAndUpdate(id, borrowerData);
 
