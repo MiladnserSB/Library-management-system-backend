@@ -180,3 +180,33 @@ export const deleteBorrower = async (id) => {
 
   return await Borrower.findByIdAndDelete(id);
 };
+
+export const updateExpectedReturnDate = async (id, expectedReturnDate) => {
+  const borrower = await Borrower.findById(id);
+
+  if (!borrower) {
+    throw new Error("Borrowing record not found");
+  }
+
+  if (borrower.returnedAt) {
+    throw new Error("Cannot update the date of a returned book");
+  }
+
+  if (!expectedReturnDate) {
+    throw new Error("Expected return date is required");
+  }
+
+  const newDate = new Date(expectedReturnDate);
+
+  if (Number.isNaN(newDate.getTime())) {
+    throw new Error("Invalid expected return date");
+  }
+
+  if (borrower.borrowDate && newDate < borrower.borrowDate) {
+    throw new Error("Expected return date cannot be before borrow date");
+  }
+
+  borrower.expectedReturnDate = newDate;
+
+  return await borrower.save();
+};

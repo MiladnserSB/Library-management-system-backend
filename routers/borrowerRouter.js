@@ -5,6 +5,7 @@ import {
   getBorrowerByIdController,
   getAllBorrowersController,
   updateBorrowerController,
+  updateExpectedReturnDateController,
 } from "../controllers/borrowerController.js";
 
 const borrowerRouter = Router();
@@ -18,4 +19,11 @@ borrowerRouter
   .put(updateBorrowerController)
   .delete(deleteBorrowerController);
 
+borrowerRouter.patch(
+  "/:id/expected-return-date",
+  updateExpectedReturnDateController
+);
+
 export default borrowerRouter;
+
+

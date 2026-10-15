@@ -146,3 +146,22 @@ export const deleteBorrowerController = async (req, res) => {
     res.status(status).json({ message: error.message });
   }
 };
+
+import * as borrowerService from "../services/borrowerService.js";
+
+export const updateExpectedReturnDateController = async (req, res) => {
+  try {
+    const updatedBorrower = await borrowerService.updateExpectedReturnDate(
+      req.params.id,
+      req.body.expectedReturnDate
+    );
+
+    return res.status(200).json(updatedBorrower);
+  } catch (error) {
+    const status = error.message === "Borrowing record not found" ? 404 : 400;
+
+    return res.status(status).json({
+      message: error.message || "Failed to update expected return date",
+    });
+  }
+};
